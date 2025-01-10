@@ -1,0 +1,55 @@
+import { useState } from 'react'
+import './App.css'
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Task from './components/Task';
+
+function App() {
+
+  const [tasks,setTasks] = useState([])
+
+  const [input,setInput] = useState("")
+
+  function onChangeHandler(e){
+    const {name,value} = e.target
+    setInput(value)
+
+  }
+
+  function handleOnClickAddTaskBtn(){
+    setTasks(prevTasks=>[...prevTasks,{task:input,isCompleted:false}])
+    setInput("")
+  }
+  
+
+
+  return (
+    <div className='main-container bg-secondary'>
+      <Card className='mt-5' style={{ width: '18rem'}}>
+      <Card.Body>
+        <Card >
+          <ListGroup>
+          { tasks.length ===0 ? <h1>No tasks left!</h1> : tasks.map((task,i) => < Task key={i} task={task.task}/>)}
+          </ListGroup>
+        </Card>
+        <InputGroup className="my-3">
+          <Form.Control
+            aria-label="Example text with button addon"
+            aria-describedby="basic-addon1"
+            onChange={onChangeHandler}
+            value={input}
+          />
+          <Button onClick={handleOnClickAddTaskBtn} variant="outline-secondary" id="button-addon1">
+            Add Task
+          </Button>
+        </InputGroup>
+      </Card.Body>
+    </Card>
+    </div>
+  )
+}
+
+export default App
