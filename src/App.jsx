@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Task from './components/Task';
+import { v4 as uuid } from 'uuid';
 
 function App() {
 
@@ -20,11 +21,23 @@ function App() {
   }
 
   function handleOnClickAddTaskBtn(){
-    setTasks(prevTasks=>[...prevTasks,{task:input,isCompleted:false}])
+    setTasks(prevTasks=>[...prevTasks,{taskId:uuid(),task:input,isCompleted:false}])
     setInput("")
   }
   
+  function completeTask(taskId){
+    setTasks(prevTasks => {
+      return prevTasks.map(task=>{
+        if(taskId === task.taskId){
+          return {...task,isCompleted:true}
+        }else{
+          return task
+        }
+      })
+    })
+  }
 
+  console.log(tasks)
 
   return (
     <div className='main-container bg-secondary'>
@@ -32,7 +45,7 @@ function App() {
       <Card.Body>
         <Card >
           <ListGroup>
-          { tasks.length ===0 ? <h1>No tasks left!</h1> : tasks.map((task,i) => < Task key={i} task={task.task}/>)}
+          { tasks.length ===0 ? <h1>No tasks left!</h1> : tasks.map((task,i) => < Task taskId={task.taskId} key={task.taskId} task={task.task} isCompleted={task.isCompleted} completeTask={completeTask}/>)}
           </ListGroup>
         </Card>
         <InputGroup className="my-3">
